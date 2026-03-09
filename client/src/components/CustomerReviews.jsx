@@ -27,22 +27,23 @@ const reviews = [
 
 export default function CustomerReviews() {
   return (
-    <section className="py-16 px-4 sm:px-6 lg:px-8 bg-white dark:bg-gray-950">
+    <section className="pt-6 pb-12 sm:pt-8 sm:pb-14 px-4 sm:px-6 lg:px-8 bg-white dark:bg-black transition-colors duration-300">
       <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl sm:text-4xl font-bold text-[#0f172a] dark:text-gray-100 mb-3">
+        <div className="text-center mb-6 sm:mb-8">
+          <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-white mb-3">
             What Our Customers Say
           </h2>
-          <p className="text-lg text-[#64748b] dark:text-gray-400">
+          <p className="text-lg text-slate-600 dark:text-zinc-400">
             Trusted by thousands of happy riders
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {/* Mobile: horizontal slider. md+: grid */}
+        <div className="flex md:grid md:grid-cols-2 lg:grid-cols-3 gap-6 overflow-x-auto snap-x snap-mandatory scrollbar-hide pb-2 -mx-4 px-4 md:mx-0 md:px-0 md:overflow-visible">
           {reviews.map((review, index) => (
             <div
               key={index}
-              className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-6 hover:shadow-lg transition-all hover:border-[#67fc59] dark:hover:border-[#5CE65C]"
+              className="flex-shrink-0 w-[300px] md:w-auto snap-center bg-white dark:bg-zinc-900/80 border border-slate-200 dark:border-zinc-800 rounded-xl p-6 hover:shadow-lg hover:shadow-[#5CE65C]/10 dark:hover:shadow-[#5CE65C]/10 transition-all duration-300 hover:border-[#5CE65C]"
             >
               {/* Rating Stars */}
               <div className="flex gap-1 mb-4">
@@ -52,7 +53,7 @@ export default function CustomerReviews() {
               </div>
 
               {/* Review Text */}
-              <p className="text-[#64748b] dark:text-gray-400 mb-6 leading-relaxed">
+              <p className="text-slate-600 dark:text-zinc-400 mb-6 leading-relaxed">
                 "{review.review}"
               </p>
 
@@ -66,8 +67,8 @@ export default function CustomerReviews() {
                   />
                 </div>
                 <div>
-                  <p className="font-semibold text-[#0f172a] dark:text-gray-100">{review.name}</p>
-                  <p className="text-sm text-[#64748b] dark:text-gray-400">{review.role}</p>
+                  <p className="font-semibold text-slate-900 dark:text-white">{review.name}</p>
+                  <p className="text-sm text-slate-500 dark:text-zinc-400">{review.role}</p>
                 </div>
               </div>
             </div>

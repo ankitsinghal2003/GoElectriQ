@@ -1,167 +1,129 @@
 import { Link } from 'react-router-dom';
-import { Zap, Target, Users, Award } from 'lucide-react';
+import { useTheme } from '../context/ThemeContext.jsx';
 
 export default function AboutPage() {
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
+
   return (
-    <div className="min-h-screen bg-[#F8FAFC] dark:bg-gray-950">
-      {/* Content */}
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+    <div className={`min-h-screen transition-colors duration-300 ${isDark ? 'bg-black' : 'bg-[#fafafa]'}`}>
+      
+      <article className="w-full px-6 sm:px-10 lg:px-20 py-12 sm:py-16 lg:py-20 text-left">
 
-        {/* Hero Section */}
-        <div className="bg-white rounded-2xl shadow-lg p-6 sm:p-8 mb-6 sm:mb-8">
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#212121] mb-4">
-            About Go ElectrQ
-          </h1>
+        <h1 className={`text-3xl sm:text-4xl lg:text-5xl font-bold mb-8 ${isDark ? 'text-white' : 'text-slate-900'}`}>
+          About Go ElectriQ
+        </h1>
 
-          <p className="text-base sm:text-lg text-[#64748b] leading-relaxed">
-            Go ElectrQ is India's premier electric cab booking platform, revolutionizing urban transportation 
-            with sustainable and eco-friendly mobility solutions. We are committed to providing clean, green, 
-            and affordable travel options for modern commuters.
-          </p>
-        </div>
+        <p className={`text-base sm:text-lg leading-relaxed mb-6 ${isDark ? 'text-zinc-400' : 'text-slate-600'}`}>
+          Go ElectriQ is a modern electric cab booking platform designed to redefine the way people travel in cities. 
+          Our goal is to combine advanced technology with eco-friendly transportation to create a smarter and cleaner mobility experience. 
+          By using electric vehicles, we help reduce pollution while providing passengers with comfortable, reliable, and affordable rides.
+        </p>
 
-        {/* Mission & Vision */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 mb-6 sm:mb-8">
+        <p className={`text-base sm:text-lg leading-relaxed mb-6 ${isDark ? 'text-zinc-400' : 'text-slate-600'}`}>
+          Transportation is one of the largest contributors to urban pollution. At Go ElectriQ, we believe the future of mobility 
+          must be sustainable and environmentally responsible. Our electric fleet produces zero tailpipe emissions, helping cities 
+          become greener and healthier places to live.
+        </p>
 
-          <div className="bg-white rounded-xl p-6 shadow-lg">
-            <div className="w-12 h-12 bg-[#008000]/10 rounded-full flex items-center justify-center mb-4">
-              <Target className="w-6 h-6 text-[#00FF00]" />
-            </div>
+        <p className={`text-base sm:text-lg leading-relaxed mb-10 ${isDark ? 'text-zinc-400' : 'text-slate-600'}`}>
+          Whether you're commuting to work, heading to the airport, attending meetings, or exploring the city, 
+          Go ElectriQ provides a reliable transportation solution that fits your lifestyle. Our platform is designed 
+          to make booking an electric cab simple, fast, and convenient for everyone.
+        </p>
 
-            <h2 className="text-lg sm:text-xl font-semibold text-[#212121] mb-3">
-              Our Mission
-            </h2>
 
-            <p className="text-sm sm:text-base text-[#64748b] leading-relaxed">
-              To make electric transportation accessible, affordable, and convenient for everyone while 
-              reducing carbon emissions and promoting sustainable living.
-            </p>
-          </div>
+        <h2 className={`text-xl sm:text-2xl font-semibold mb-4 ${isDark ? 'text-blue-400' : 'text-blue-600'}`}>
+          Our Mission
+        </h2>
 
-          <div className="bg-white rounded-xl p-6 shadow-lg">
-            <div className="w-12 h-12 bg-[#008000]/10 rounded-full flex items-center justify-center mb-4">
-              <Zap className="w-6 h-6 text-[#00FF00]" />
-            </div>
+        <p className={`text-base sm:text-lg leading-relaxed mb-8 ${isDark ? 'text-zinc-400' : 'text-slate-600'}`}>
+          Our mission is to accelerate the transition toward sustainable transportation by making electric mobility 
+          accessible, reliable, and affordable. We aim to reduce carbon emissions, improve urban air quality, and 
+          provide travelers with a smarter alternative to traditional transportation.
+        </p>
 
-            <h2 className="text-lg sm:text-xl font-semibold text-[#212121] mb-3">
-              Our Vision
-            </h2>
 
-            <p className="text-sm sm:text-base text-[#64748b] leading-relaxed">
-              To become India's most trusted electric mobility platform, leading the transition to a 
-              zero-emission future and setting new standards in sustainable transportation.
-            </p>
-          </div>
+        <h2 className={`text-xl sm:text-2xl font-semibold mb-4 ${isDark ? 'text-blue-400' : 'text-blue-600'}`}>
+          Our Vision
+        </h2>
 
-        </div>
+        <p className={`text-base sm:text-lg leading-relaxed mb-8 ${isDark ? 'text-zinc-400' : 'text-slate-600'}`}>
+          Our vision is to build one of India's most trusted electric mobility platforms and lead the future of 
+          zero-emission transportation. We envision cities where transportation is efficient, affordable, and 
+          environmentally friendly for every traveler.
+        </p>
 
-        {/* What We Do */}
-        <div className="bg-white rounded-2xl shadow-lg p-6 sm:p-8 mb-6 sm:mb-8">
 
-          <h2 className="text-xl sm:text-2xl font-semibold text-[#212121] mb-6">
-            What We Do
-          </h2>
+        <h2 className={`text-xl sm:text-2xl font-semibold mb-4 ${isDark ? 'text-blue-400' : 'text-blue-600'}`}>
+          What We Offer
+        </h2>
 
-          <div className="space-y-4">
+        <p className={`text-base sm:text-lg leading-relaxed mb-6 ${isDark ? 'text-zinc-400' : 'text-slate-600'}`}>
+          Go ElectriQ offers a wide range of electric transportation services designed to meet different travel needs.
+        </p>
 
-            <div className="flex items-start gap-3">
-              <div className="w-2 h-2 bg-[#00FF00] rounded-full mt-2"></div>
-              <p className="text-sm sm:text-base text-[#64748b]">
-                <strong className="text-[#212121]">City Rides:</strong> Quick and convenient electric cab services
-              </p>
-            </div>
+        <p className={`text-base sm:text-lg leading-relaxed mb-4 ${isDark ? 'text-zinc-400' : 'text-slate-600'}`}>
+          • <span className={isDark ? 'text-zinc-200 font-medium' : 'text-slate-800 font-medium'}>City Rides:</span> Fast and convenient electric cab rides for daily commuting within the city.
+        </p>
 
-            <div className="flex items-start gap-3">
-              <div className="w-2 h-2 bg-[#00FF00] rounded-full mt-2"></div>
-              <p className="text-sm sm:text-base text-[#64748b]">
-                <strong className="text-[#212121]">Airport Transfers:</strong> Reliable and comfortable rides
-              </p>
-            </div>
+        <p className={`text-base sm:text-lg leading-relaxed mb-4 ${isDark ? 'text-zinc-400' : 'text-slate-600'}`}>
+          • <span className={isDark ? 'text-zinc-200 font-medium' : 'text-slate-800 font-medium'}>Airport Transfers:</span> Reliable airport pickups and drop-offs with comfortable electric vehicles.
+        </p>
 
-            <div className="flex items-start gap-3">
-              <div className="w-2 h-2 bg-[#00FF00] rounded-full mt-2"></div>
-              <p className="text-sm sm:text-base text-[#64748b]">
-                <strong className="text-[#212121]">Intercity Trips:</strong> Long-distance electric travel
-              </p>
-            </div>
+        <p className={`text-base sm:text-lg leading-relaxed mb-4 ${isDark ? 'text-zinc-400' : 'text-slate-600'}`}>
+          • <span className={isDark ? 'text-zinc-200 font-medium' : 'text-slate-800 font-medium'}>Intercity Travel:</span> Long-distance electric cab services connecting nearby cities safely and efficiently.
+        </p>
 
-            <div className="flex items-start gap-3">
-              <div className="w-2 h-2 bg-[#00FF00] rounded-full mt-2"></div>
-              <p className="text-sm sm:text-base text-[#64748b]">
-                <strong className="text-[#212121]">Tour Packages:</strong> Curated EV tours and travel
-              </p>
-            </div>
+        <p className={`text-base sm:text-lg leading-relaxed mb-10 ${isDark ? 'text-zinc-400' : 'text-slate-600'}`}>
+          • <span className={isDark ? 'text-zinc-200 font-medium' : 'text-slate-800 font-medium'}>Tour & Travel Packages:</span> Special EV travel experiences designed for tourism, sightseeing, and group travel.
+        </p>
 
-          </div>
 
-        </div>
+        <h2 className={`text-xl sm:text-2xl font-semibold mb-4 ${isDark ? 'text-blue-400' : 'text-blue-600'}`}>
+          Why Choose Go ElectriQ
+        </h2>
 
-        {/* Why Choose Us */}
-        <div className="bg-white rounded-2xl shadow-lg p-6 sm:p-8 mb-6 sm:mb-8">
+        <ul className={`space-y-3 mb-8 ${isDark ? 'text-zinc-300' : 'text-slate-700'}`}>
+          <li className="text-base sm:text-lg leading-relaxed"> • <span className={isDark ? 'text-zinc-200 font-medium' : 'text-slate-800 font-medium'}>100% Eco-Friendly Electric Vehicles</span></li>
+          <li className="text-base sm:text-lg leading-relaxed"> • <span className={isDark ? 'text-zinc-200 font-medium' : 'text-slate-800 font-medium'}>Affordable and Transparent Pricing</span></li>
+          <li className="text-base sm:text-lg leading-relaxed"> • <span className={isDark ? 'text-zinc-200 font-medium' : 'text-slate-800 font-medium'}>24/7 Booking Availability</span></li>
+          <li className="text-base sm:text-lg leading-relaxed"> • <span className={isDark ? 'text-zinc-200 font-medium' : 'text-slate-800 font-medium'}>Smooth & Quiet Ride Experience</span></li>
+          <li className="text-base sm:text-lg leading-relaxed"> • <span className={isDark ? 'text-zinc-200 font-medium' : 'text-slate-800 font-medium'}>Verified and Trained Drivers</span></li>
+          <li className="text-base sm:text-lg leading-relaxed"> • <span className={isDark ? 'text-zinc-200 font-medium' : 'text-slate-800 font-medium'}>24/7 Customer Support</span></li>
+        </ul>
 
-          <h2 className="text-xl sm:text-2xl font-semibold text-[#212121] mb-6">
-            Why Choose Us
-          </h2>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <h2 className={`text-xl sm:text-2xl font-semibold mb-4 ${isDark ? 'text-blue-400' : 'text-blue-600'}`}>
+          Our Commitment
+        </h2>
 
-            <div className="flex gap-3">
-              <Zap className="w-5 h-5 text-[#00FF00]" />
-              <div>
-                <h3 className="font-semibold text-[#212121]">100% Electric Fleet</h3>
-                <p className="text-sm text-[#64748b]">Zero emissions travel</p>
-              </div>
-            </div>
+        <p className={`text-base sm:text-lg leading-relaxed mb-12 ${isDark ? 'text-zinc-400' : 'text-slate-600'}`}>
+          At Go ElectriQ, we are committed to building a sustainable future through smart mobility solutions. 
+          Our team continuously works on improving the platform, expanding our electric fleet, and delivering 
+          the best travel experience to our customers. Every ride taken with Go ElectriQ is a step toward a 
+          cleaner planet and a smarter transportation system.
+        </p>
 
-            <div className="flex gap-3">
-              <Users className="w-5 h-5 text-[#00FF00]" />
-              <div>
-                <h3 className="font-semibold text-[#212121]">Professional Drivers</h3>
-                <p className="text-sm text-[#64748b]">Verified partners</p>
-              </div>
-            </div>
 
-            <div className="flex gap-3">
-              <Award className="w-5 h-5 text-[#00FF00]" />
-              <div>
-                <h3 className="font-semibold text-[#212121]">Affordable Pricing</h3>
-                <p className="text-sm text-[#64748b]">Transparent billing</p>
-              </div>
-            </div>
-
-            <div className="flex gap-3">
-              <Target className="w-5 h-5 text-[#00FF00]" />
-              <div>
-                <h3 className="font-semibold text-[#212121]">24/7 Service</h3>
-                <p className="text-sm text-[#64748b]">Always available</p>
-              </div>
-            </div>
-
-          </div>
-
-        </div>
-
-        {/* CTA */}
-        <div className="bg-[#008000] rounded-2xl p-6 sm:p-8 text-center shadow-lg">
-
-          <h2 className="text-xl sm:text-2xl font-bold text-white">
-            Join the Green Revolution
-          </h2>
-
-          <p className="text-white/90 mb-6">
-            Book your first electric ride today
+        <div className="pt-10 border-t border-zinc-600 dark:border-zinc-800">
+          <p className={`text-lg font-medium mb-6 ${isDark ? 'text-white' : 'text-slate-900'}`}>
+            Ready to experience electric mobility?
           </p>
 
           <Link
             to="/"
-            className="inline-block bg-[#FFFF00] text-[#212121] px-6 py-3 rounded-lg font-semibold"
+            className={`inline-flex items-center px-7 py-3 rounded-lg font-semibold transition ${
+              isDark
+                ? 'bg-[#5CE65C] text-slate-900 hover:bg-[#4ED84E]'
+                : 'bg-[#FBBF24] text-slate-900 hover:bg-[#F59E0B]'
+            }`}
           >
-            Book Now
+            Book Your Ride
           </Link>
-
         </div>
 
-      </div>
+      </article>
     </div>
   );
 }

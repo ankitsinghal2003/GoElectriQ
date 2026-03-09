@@ -8,7 +8,7 @@ import Footer from '../components/Footer';
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-950 font-['Poppins']">
+    <div className="min-h-screen bg-[#fafafa] dark:bg-black font-['Poppins'] transition-colors duration-300">
       <Hero />
       <Services />
       <TravelTours />

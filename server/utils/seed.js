@@ -12,21 +12,20 @@ async function seedAdmin() {
   try {
     await connectDB();
 
-    let admin = await User.findOne({ email: ADMIN_EMAIL });
-    if (admin) {
-      admin.role = 'admin';
-      await admin.save();
-      console.log('✅ Existing admin user updated to admin role');
-    } else {
-      admin = await User.create({
-        name: 'Admin',
-        email: ADMIN_EMAIL,
-        password: ADMIN_PASSWORD,
-        role: 'admin',
-        isActive: true,
-      });
-      console.log('✅ Admin user created successfully');
-    }
+    const emailLower = ADMIN_EMAIL.toLowerCase().trim();
+
+    // Delete existing admin and create fresh (ensures password is correctly hashed)
+    await User.deleteOne({ email: emailLower });
+
+    await User.create({
+      name: 'Admin',
+      email: emailLower,
+      password: ADMIN_PASSWORD,
+      phone: '9876543210', // valid 10-digit for schema
+      role: 'admin',
+      isActive: true,
+    });
+    console.log('✅ Admin user created successfully');
 
     console.log('\n========================================');
     console.log('   ADMIN LOGIN CREDENTIALS');

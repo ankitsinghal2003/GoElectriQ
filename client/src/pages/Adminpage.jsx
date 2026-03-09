@@ -7,18 +7,22 @@ import {
   MapPin,
   RefreshCw,
   Loader2,
+  MessageSquare,
 } from 'lucide-react';
 import {
   getAdminPackages,
   createPackage as createPackageApi,
   deletePackage as deletePackageApi,
+  uploadPackageImage as uploadPackageImageApi,
 } from '../services/packageService.js';
 import {
   getAdminBookings,
   getAdminTourBookings,
   getAdminAnalytics,
   updateTourBookingStatus,
+  getAdminFeedback,
 } from '../services/adminService.js';
+import ImageUpload from '../components/ImageUpload.jsx';
 
 const initialPackageForm = {
   title: '',
@@ -61,8 +65,10 @@ export default function AdminPage() {
   const [packageForm, setPackageForm] = useState(initialPackageForm);
   const [packageSubmitting, setPackageSubmitting] = useState(false);
   const [packageMessage, setPackageMessage] = useState({ type: '', text: '' });
+  const [imageUploadError, setImageUploadError] = useState('');
   const [ordersTab, setOrdersTab] = useState('tour');
   const [updatingId, setUpdatingId] = useState(null);
+  const [feedback, setFeedback] = useState({ feedback: [], pagination: {} });
 
   const fetchAnalytics = () => {
     getAdminAnalytics()
@@ -82,6 +88,12 @@ export default function AdminPage() {
       .catch(() => setTourBookings({ tourBookings: [], pagination: {} }));
   };
 
+  const fetchFeedback = () => {
+    getAdminFeedback({ limit: 50 })
+      .then((res) => setFeedback(res?.data || { feedback: [], pagination: {} }))
+      .catch(() => setFeedback({ feedback: [], pagination: {} }));
+  };
+
   const fetchPackages = () => {
     setPackagesLoading(true);
     getAdminPackages()
@@ -96,11 +108,13 @@ export default function AdminPage() {
       getAdminAnalytics(),
       getAdminBookings({ limit: 50 }),
       getAdminTourBookings({ limit: 50 }),
+      getAdminFeedback({ limit: 50 }),
     ])
-      .then(([aRes, bRes, tRes]) => {
+      .then(([aRes, bRes, tRes, fRes]) => {
         setAnalytics(aRes?.data || aRes);
         setRideBookings(bRes?.data || { bookings: [], pagination: {} });
         setTourBookings(tRes?.data || { tourBookings: [], pagination: {} });
+        setFeedback(fRes?.data || { feedback: [], pagination: {} });
       })
       .catch(() => {})
       .finally(() => setLoading(false));
@@ -112,11 +126,12 @@ export default function AdminPage() {
 
   const handleRefresh = () => {
     setLoading(true);
-    Promise.all([getAdminAnalytics(), getAdminBookings({ limit: 50 }), getAdminTourBookings({ limit: 50 })])
-      .then(([aRes, bRes, tRes]) => {
+    Promise.all([getAdminAnalytics(), getAdminBookings({ limit: 50 }), getAdminTourBookings({ limit: 50 }), getAdminFeedback({ limit: 50 })])
+      .then(([aRes, bRes, tRes, fRes]) => {
         setAnalytics(aRes?.data || aRes);
         setRideBookings(bRes?.data || { bookings: [], pagination: {} });
         setTourBookings(tRes?.data || { tourBookings: [], pagination: {} });
+        setFeedback(fRes?.data || { feedback: [], pagination: {} });
       })
       .finally(() => setLoading(false));
     fetchPackages();
@@ -353,14 +368,19 @@ export default function AdminPage() {
               />
             </div>
             <div className="md:col-span-2">
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Cover Image URL</label>
-              <input
-                name="coverImage"
+              <ImageUpload
+                label="Cover Image"
                 value={packageForm.coverImage}
-                onChange={handlePackageChange}
-                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800"
-                placeholder="https://..."
+                onChange={(url) => {
+                  setPackageForm((p) => ({ ...p, coverImage: url }));
+                  setImageUploadError('');
+                }}
+                onError={setImageUploadError}
+                uploadFn={uploadPackageImageApi}
               />
+              {imageUploadError && (
+                <p className="text-red-600 text-sm mt-1">{imageUploadError}</p>
+              )}
             </div>
             <div className="md:col-span-2 flex items-center gap-4">
               <button
@@ -553,6 +573,42 @@ export default function AdminPage() {
               )}
             </div>
           )}
+        </div>
+
+        {/* Customer Feedback */}
+        <div className="bg-white dark:bg-gray-900 rounded-xl shadow-sm border border-gray-200 dark:border-gray-800 mt-8">
+          <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-800 flex items-center gap-2">
+            <MessageSquare className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+            <h2 className="text-xl font-bold text-gray-900 dark:text-white">Customer Feedback</h2>
+          </div>
+          <div className="p-4 overflow-x-auto">
+            {feedback.feedback?.length === 0 ? (
+              <p className="text-gray-500 dark:text-gray-400 py-6">No feedback yet.</p>
+            ) : (
+              <div className="space-y-4">
+                {feedback.feedback?.map((fb) => (
+                  <div
+                    key={fb._id}
+                    className="p-4 rounded-lg bg-gray-50 dark:bg-gray-800 border border-gray-100 dark:border-gray-700"
+                  >
+                    <div className="flex flex-wrap items-center gap-2 mb-2">
+                      <span className="font-semibold text-gray-900 dark:text-white">{fb.name}</span>
+                      <span className="text-sm text-gray-500 dark:text-gray-400">{fb.mobile}</span>
+                      {fb.rating && (
+                        <span className="text-amber-500 text-sm">
+                          {'★'.repeat(fb.rating)}{'☆'.repeat(5 - fb.rating)}
+                        </span>
+                      )}
+                      <span className="text-xs text-gray-400 dark:text-gray-500 ml-auto">
+                        {fb.createdAt ? new Date(fb.createdAt).toLocaleString() : ''}
+                      </span>
+                    </div>
+                    <p className="text-gray-700 dark:text-gray-300 text-sm">{fb.feedback}</p>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>

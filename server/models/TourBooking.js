@@ -66,7 +66,7 @@ const tourBookingSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-tourBookingSchema.pre('save', async function (next) {
+tourBookingSchema.pre('save', async function () {
   if (!this.bookingId) {
     const date = new Date();
     const year = date.getFullYear().toString().slice(-2);
@@ -74,7 +74,6 @@ tourBookingSchema.pre('save', async function (next) {
     const random = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
     this.bookingId = `TOUR${year}${month}${random}`;
   }
-  next();
 });
 
 tourBookingSchema.index({ user: 1, createdAt: -1 });

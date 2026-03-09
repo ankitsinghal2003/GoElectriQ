@@ -72,8 +72,8 @@ const paymentSchema = new mongoose.Schema(
   }
 );
 
-// Generate transaction ID before saving
-paymentSchema.pre('save', async function (next) {
+// Generate transaction ID before saving (Mongoose 9: no next() callback)
+paymentSchema.pre('save', async function () {
   if (!this.transactionId) {
     const date = new Date();
     const year = date.getFullYear().toString().slice(-2);
@@ -82,7 +82,6 @@ paymentSchema.pre('save', async function (next) {
     const random = Math.floor(Math.random() * 100000).toString().padStart(5, '0');
     this.transactionId = `TXN${year}${month}${day}${random}`;
   }
-  next();
 });
 
 // Index for faster queries

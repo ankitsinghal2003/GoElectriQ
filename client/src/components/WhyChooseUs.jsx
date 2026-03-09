@@ -45,23 +45,24 @@ const titleVariants = {
 
 export default function WhyChooseUs() {
   return (
-    <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-900 overflow-hidden">
+    <section className="pt-6 pb-10 sm:pt-8 sm:pb-12 px-4 sm:px-6 lg:px-8 bg-slate-50 dark:bg-zinc-950 overflow-hidden transition-colors duration-300">
       <div className="max-w-7xl mx-auto">
         <motion.div
-          className="text-center mb-12"
+          className="text-center mb-6 sm:mb-8"
           variants={titleVariants}
           initial="hidden"
           animate="visible"
         >
-          <h2 className="text-3xl sm:text-4xl font-bold text-[#0f172a] dark:text-gray-100 mb-3">
-            Why Choose Go Electriq?
+          <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-white mb-3">
+            Why Choose Go ElectriQ?
           </h2>
-          <p className="text-lg text-[#64748b] dark:text-gray-400">
+          <p className="text-lg text-slate-600 dark:text-zinc-400">
             Your trusted partner for sustainable travel
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {/* Mobile: horizontal slider. sm+: grid */}
+        <div className="flex sm:grid sm:grid-cols-2 lg:grid-cols-4 gap-6 overflow-x-auto snap-x snap-mandatory scrollbar-hide pb-2 -mx-4 px-4 sm:mx-0 sm:px-0 sm:overflow-visible">
           {features.map((feature, index) => {
             const Icon = feature.icon;
             return (
@@ -72,18 +73,18 @@ export default function WhyChooseUs() {
                 animate="visible"
                 custom={index}
                 whileHover="hover"
-                className="bg-white dark:bg-gray-800 rounded-xl p-6 text-center hover:shadow-lg transition-shadow border border-gray-100 dark:border-white/20 hover:border-[#67fc59] dark:hover:border-[#5CE65C]"
+                className="shrink-0 w-[280px] sm:w-auto snap-center bg-white dark:bg-zinc-900/80 rounded-xl p-6 text-center hover:shadow-lg hover:shadow-[#5CE65C]/10 dark:hover:shadow-[#5CE65C]/10 transition-all duration-300 border border-slate-200 dark:border-zinc-800 hover:border-[#5CE65C] dark:hover:border-[#5CE65C] group"
               >
                 <motion.div
-                  className="w-16 h-16 bg-[#dcfce7] dark:bg-emerald-900/50 rounded-full flex items-center justify-center mx-auto mb-4"
+                  className="w-16 h-16 bg-slate-100 dark:bg-zinc-800 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-[#5CE65C] transition-colors duration-200"
                   whileHover={{ scale: 1.1, rotate: 5 }}
                 >
-                  <Icon className="w-8 h-8 text-[#67fc59]" />
+                  <Icon className="w-8 h-8 text-slate-700 dark:text-zinc-200 group-hover:text-white transition-colors" />
                 </motion.div>
-                <h3 className="text-xl font-semibold text-[#0f172a] dark:text-gray-100 mb-2">
+                <h3 className="text-xl font-semibold text-slate-900 dark:text-white mb-2">
                   {feature.title}
                 </h3>
-                <p className="text-[#64748b] dark:text-gray-300">
+                <p className="text-slate-600 dark:text-zinc-400">
                   {feature.description}
                 </p>
               </motion.div>

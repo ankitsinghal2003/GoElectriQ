@@ -49,8 +49,8 @@ export function ServicesSection() {
                 key={index}
                 className="group bg-white rounded-2xl p-6 border border-[#E5E7EB] hover:border-[#5CE65C] hover:shadow-xl transition-all duration-300 cursor-pointer"
               >
-                <div className="w-14 h-14 bg-[#E8FFE8] rounded-xl flex items-center justify-center mb-4 group-hover:bg-[#5CE65C] transition-colors">
-                  <Icon className="w-7 h-7 text-[#5CE65C] group-hover:text-white transition-colors" />
+                <div className="w-14 h-14 flex items-center justify-center mb-4 rounded-full bg-transparent group-hover:bg-[#5CE65C] transition-colors">
+                  <Icon className="w-7 h-7 text-[#0f172a] group-hover:scale-110 transition-transform" />
                 </div>
                 <h3 className="font-semibold text-[#0f172a] mb-2 text-lg">
                   {service.title}

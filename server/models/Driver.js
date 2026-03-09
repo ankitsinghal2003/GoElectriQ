@@ -145,11 +145,9 @@ const driverSchema = new mongoose.Schema(
 // Index for geospatial queries
 driverSchema.index({ currentLocation: '2dsphere' });
 
-// Encrypt password before saving
-driverSchema.pre('save', async function (next) {
-  if (!this.isModified('password')) {
-    next();
-  }
+// Encrypt password before saving (Mongoose 9: no next() callback)
+driverSchema.pre('save', async function () {
+  if (!this.isModified('password')) return;
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);
 });

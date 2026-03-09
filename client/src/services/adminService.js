@@ -19,3 +19,8 @@ export async function getAdminAnalytics() {
   const { data } = await api.get('/admin/analytics');
   return data;
 }
+
+export async function getAdminFeedback(params = {}) {
+  const { data } = await api.get('/admin/feedback', { params });
+  return data;
+}

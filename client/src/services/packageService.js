@@ -43,3 +43,13 @@ export function deletePackage(id) {
 export function createTourBooking(data) {
   return api.post('/tour-bookings', data).then((res) => res.data);
 }
+
+/**
+ * Admin: upload package cover image
+ */
+export async function uploadPackageImage(file) {
+  const formData = new FormData();
+  formData.append('image', file);
+  const { data } = await api.post('/admin/upload-image', formData);
+  return data;
+}

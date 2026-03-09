@@ -221,8 +221,8 @@ const bookingSchema = new mongoose.Schema(
   }
 );
 
-// Generate unique booking ID before saving
-bookingSchema.pre('save', async function (next) {
+// Generate unique booking ID before saving (Mongoose 9: no next() callback)
+bookingSchema.pre('save', async function () {
   if (!this.bookingId) {
     const date = new Date();
     const year = date.getFullYear().toString().slice(-2);
@@ -230,7 +230,6 @@ bookingSchema.pre('save', async function (next) {
     const random = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
     this.bookingId = `ECB${year}${month}${random}`;
   }
-  next();
 });
 
 // Index for faster queries (bookingId already has unique: true in schema)

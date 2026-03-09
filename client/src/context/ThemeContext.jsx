@@ -15,7 +15,7 @@ export function ThemeProvider({ children }) {
     const metaTheme = document.querySelector('meta[name="theme-color"]');
     if (theme === 'dark') {
       root.classList.add('dark');
-      if (metaTheme) metaTheme.setAttribute('content', '#0a0a0a');
+      if (metaTheme) metaTheme.setAttribute('content', '#000000');
     } else {
       root.classList.remove('dark');
       if (metaTheme) metaTheme.setAttribute('content', '#ffffff');

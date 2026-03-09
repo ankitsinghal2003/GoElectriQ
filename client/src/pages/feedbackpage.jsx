@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { MessageSquare, Star } from 'lucide-react';
 import { useState } from 'react';
+import { submitFeedback } from '../services/feedbackService.js';
 
 export default function FeedbackPage() {
   const [formData, setFormData] = useState({
@@ -10,19 +11,24 @@ export default function FeedbackPage() {
   });
   const [rating, setRating] = useState(0);
   const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Here you would typically send the data to your backend
-    console.log('Feedback submitted:', { ...formData, rating });
-    setSubmitted(true);
-    
-    // Reset form after 3 seconds
-    setTimeout(() => {
+    setError('');
+    setLoading(true);
+    try {
+      await submitFeedback({ ...formData, rating: rating || undefined });
+      setSubmitted(true);
       setFormData({ name: '', mobile: '', feedback: '' });
       setRating(0);
-      setSubmitted(false);
-    }, 3000);
+      setTimeout(() => setSubmitted(false), 3000);
+    } catch (err) {
+      setError(err?.response?.data?.message || 'Failed to submit feedback. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleChange = (e) => {
@@ -61,6 +67,9 @@ export default function FeedbackPage() {
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-6">
+              {error && (
+                <p className="text-red-500 text-sm">{error}</p>
+              )}
               {/* Rating */}
               <div>
                 <label className="block text-sm font-semibold text-[#212121] mb-3">
@@ -141,9 +150,10 @@ export default function FeedbackPage() {
               {/* Submit Button */}
               <button
                 type="submit"
-                className="w-full bg-[#FFFF00] text-[#212121] py-3 rounded-lg font-semibold hover:bg-[#FFFF00]/90 transition-colors text-sm sm:text-base"
+                disabled={loading}
+                className="w-full bg-[#FFFF00] text-[#212121] py-3 rounded-lg font-semibold hover:bg-[#FFFF00]/90 transition-colors text-sm sm:text-base disabled:opacity-70 disabled:cursor-not-allowed"
               >
-                Submit Feedback
+                {loading ? 'Submitting...' : 'Submit Feedback'}
               </button>
             </form>
           )}

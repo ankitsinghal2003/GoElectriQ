@@ -3,12 +3,13 @@ import { Menu, X, ChevronDown, LogOut, Moon, Sun } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.jsx';
 import { useTheme } from '../context/ThemeContext.jsx';
-const LOGO_FALLBACK = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 40"%3E%3Ctext x="0" y="28" font-family="Arial" font-size="24" font-weight="bold" fill="%230f172a"%3EGo ElectriQ%3C/text%3E%3C/svg%3E';
+import logoWhite from '../assets/main1.png';
+import logoBlack from '../assets/main2.png';
 
 export default function Navbar() {
   const { user, logout, isAuthenticated } = useAuth();
   const { theme, toggleTheme } = useTheme();
-  const logo = theme === 'dark' ? LOGO_FALLBACK : LOGO_FALLBACK.replace('%230f172a', '%23ffffff');
+  const logo = theme === 'dark' ? logoWhite : logoBlack;
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -42,8 +43,8 @@ export default function Navbar() {
 
   const isDarkMode = theme === 'dark';
   return (
-    <nav className={`fixed top-0 left-0 right-0 shadow-sm z-50 border-b transition-colors ${
-      isDarkMode ? 'bg-white border-gray-200' : 'bg-[#343434] border-[#2d2d2d]'
+    <nav className={`fixed top-0 left-0 right-0 shadow-sm z-50 border-b transition-all duration-300 ${
+      isDarkMode ? 'bg-black border-zinc-800' : 'bg-white border-slate-200'
     }`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
@@ -57,7 +58,7 @@ export default function Navbar() {
             <div className="relative" ref={dropdownRef}>
               <button
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                className={`flex items-center space-x-1 transition-colors hover:text-[#FBBF24] ${isDarkMode ? 'text-gray-900' : 'text-white'}`}
+                className={`flex items-center space-x-1 transition-colors hover:text-[#FBBF24] ${isDarkMode ? 'text-white' : 'text-slate-900'}`}
               >
                 <span>About Company</span>
                 <ChevronDown className="w-4 h-4" />
@@ -65,14 +66,14 @@ export default function Navbar() {
 
               {isDropdownOpen && (
                 <div className={`absolute top-full left-0 mt-2 w-48 rounded-lg shadow-lg py-2 border ${
-                  isDarkMode ? 'bg-white border-gray-200' : 'bg-[#3d3d3d] border-[#4a4a4a]'
+                  isDarkMode ? 'bg-zinc-800 border-zinc-700' : 'bg-white border-slate-200'
                 }`}>
                   {dropdownItems.map((item) => (
                     <Link
                       key={item.path}
                       to={item.path}
                       onClick={() => setIsDropdownOpen(false)}
-                      className={`block px-4 py-2 hover:bg-[#E8FFE8] hover:text-[#FBBF24] transition-colors ${isDarkMode ? 'text-gray-900 hover:bg-gray-100' : 'text-white hover:bg-[#4a4a4a]'}`}
+                      className={`block px-4 py-2 hover:text-[#FBBF24] transition-colors ${isDarkMode ? 'text-white hover:bg-zinc-700' : 'text-slate-900 hover:bg-slate-100'}`}
                     >
                       {item.label}
                     </Link>
@@ -86,20 +87,20 @@ export default function Navbar() {
                 {user?.role === 'admin' && (
                   <Link
                     to="/admin"
-                    className={`px-4 py-2 rounded-lg transition-colors font-medium ${isDarkMode ? 'text-gray-900 hover:bg-gray-100' : 'text-white hover:bg-[#4a4a4a]'}`}
+                    className={`px-4 py-2 rounded-lg transition-colors font-medium ${isDarkMode ? 'text-white hover:bg-zinc-800' : 'text-slate-900 hover:bg-slate-100'}`}
                   >
                     Admin
                   </Link>
                 )}
                 <Link
                   to="/profile"
-                  className={`px-4 py-2 rounded-lg transition-colors font-medium ${isDarkMode ? 'text-gray-900 hover:bg-gray-100' : 'text-white hover:bg-[#4a4a4a]'}`}
+                  className={`px-4 py-2 rounded-lg transition-colors font-medium ${isDarkMode ? 'text-white hover:bg-zinc-800' : 'text-slate-900 hover:bg-slate-100'}`}
                 >
                   {user?.name || user?.email || 'Profile'}
                 </Link>
                 <button
                   onClick={handleLogout}
-                  className={`flex items-center gap-1 px-4 py-2 rounded-lg transition-colors ${isDarkMode ? 'text-red-600 hover:bg-red-50' : 'text-red-400 hover:bg-red-900/40'}`}
+                  className={`flex items-center gap-1 px-4 py-2 rounded-lg transition-colors ${isDarkMode ? 'text-red-400 hover:bg-red-900/30' : 'text-red-600 hover:bg-red-50'}`}
                 >
                   <LogOut className="w-4 h-4" /> Logout
                 </button>
@@ -107,7 +108,7 @@ export default function Navbar() {
             ) : (
               <Link
                 to="/login"
-                className={`px-6 py-2 rounded-lg transition-colors ${isDarkMode ? 'text-gray-900 hover:bg-gray-100' : 'text-white hover:bg-[#4a4a4a]'}`}
+                className={`px-6 py-2 rounded-lg transition-colors ${isDarkMode ? 'text-white hover:bg-zinc-800' : 'text-slate-900 hover:bg-slate-100'}`}
               >
                 Login / Signup
               </Link>
@@ -116,7 +117,7 @@ export default function Navbar() {
             {/* Theme Toggle */}
             <button
               onClick={toggleTheme}
-              className={`p-2 rounded-lg transition-colors ${isDarkMode ? 'text-gray-900 hover:bg-gray-100' : 'text-white hover:bg-[#4a4a4a]'}`}
+              className={`p-2 rounded-lg transition-colors ${isDarkMode ? 'text-white hover:bg-zinc-800' : 'text-slate-900 hover:bg-slate-100'}`}
               aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
             >
               {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
@@ -127,14 +128,14 @@ export default function Navbar() {
             {/* Theme Toggle - Mobile */}
             <button
               onClick={toggleTheme}
-              className={`p-2 rounded-lg transition-colors ${isDarkMode ? 'text-gray-900 hover:bg-gray-100' : 'text-white hover:bg-[#4a4a4a]'}`}
+              className={`p-2 rounded-lg transition-colors ${isDarkMode ? 'text-white hover:bg-zinc-800' : 'text-slate-900 hover:bg-slate-100'}`}
               aria-label={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
             >
               {isDarkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
             </button>
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className={`md:hidden p-2 ${isDarkMode ? 'text-gray-900' : 'text-white'}`}
+            className={`md:hidden p-2 ${isDarkMode ? 'text-white' : 'text-slate-900'}`}
           >
             {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
@@ -143,16 +144,16 @@ export default function Navbar() {
       </div>
 
       {isMenuOpen && (
-        <div className={`md:hidden border-t ${isDarkMode ? 'bg-white border-gray-200' : 'bg-[#3d3d3d] border-[#4a4a4a]'}`}>
+        <div className={`md:hidden border-t ${isDarkMode ? 'bg-black border-zinc-800' : 'bg-white border-slate-200'}`}>
           <div className="px-4 py-4 space-y-4">
             <div className="space-y-2">
-              <p className={`font-semibold mb-2 ${isDarkMode ? 'text-gray-900' : 'text-white'}`}>About Company</p>
+              <p className={`font-semibold mb-2 ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>About Company</p>
               {dropdownItems.map((item) => (
                 <Link
                   key={item.path}
                   to={item.path}
                   onClick={() => setIsMenuOpen(false)}
-                  className={`block px-4 py-2 rounded-lg transition-colors hover:text-[#FBBF24] ${isDarkMode ? 'text-gray-600 hover:bg-gray-100' : 'text-gray-300 hover:bg-[#4a4a4a]'}`}
+                  className={`block px-4 py-2 rounded-lg transition-colors hover:text-[#FBBF24] ${isDarkMode ? 'text-zinc-300 hover:bg-zinc-800' : 'text-slate-600 hover:bg-slate-100'}`}
                 >
                   {item.label}
                 </Link>
@@ -165,7 +166,7 @@ export default function Navbar() {
                   <Link
                     to="/admin"
                     onClick={() => setIsMenuOpen(false)}
-                    className={`block px-4 py-2 font-medium ${isDarkMode ? 'text-gray-900' : 'text-white'}`}
+                    className={`block px-4 py-2 font-medium ${isDarkMode ? 'text-white' : 'text-slate-900'}`}
                   >
                     Admin
                   </Link>

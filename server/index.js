@@ -10,8 +10,8 @@ import compression from 'compression';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-// Load environment variables
-dotenv.config();
+// Load environment variables (from server directory so .env is found when run from project root)
+dotenv.config({ path: path.join(path.dirname(fileURLToPath(import.meta.url)), '.env') });
 
 // Import configurations
 import connectDB from './config/database.js';
@@ -34,6 +34,7 @@ import tourBookingRoutes from './routes/tourBookingRoutes.js';
 import paymentRoutes from './routes/paymentRoutes.js';
 import pricingRoutes from './routes/pricingRoutes.js';
 import locationRoutes from './routes/locationRoutes.js';
+import feedbackRoutes from './routes/feedbackRoutes.js';
 
 // Get __dirname equivalent in ES modules
 const __filename = fileURLToPath(import.meta.url);
@@ -105,6 +106,7 @@ app.use('/api/tour-bookings', tourBookingRoutes);
 app.use('/api/payments', paymentRoutes);
 app.use('/api/pricing', pricingRoutes);
 app.use('/api/location', locationRoutes);
+app.use('/api/feedback', feedbackRoutes);
 
 // Welcome route
 app.get('/', (req, res) => {

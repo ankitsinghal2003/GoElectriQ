@@ -131,8 +131,10 @@ export const loginUser = async (req, res) => {
       });
     }
 
+    const emailLower = String(email).toLowerCase().trim();
+
     // Find user (include password for verification)
-    const user = await User.findOne({ email }).select('+password');
+    const user = await User.findOne({ email: emailLower }).select('+password');
 
     if (!user) {
       return res.status(401).json({

@@ -1,24 +1,28 @@
 import { useState, useEffect, useCallback } from 'react';
 import { MapPin, Navigation, Loader2 } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useTheme } from '../context/ThemeContext.jsx';
-import { reverseGeocode } from '../services/locationService.js';
-
-const FALLBACK_BG = 'https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?w=1920&q=80';
+import { reverseGeocode, estimateDistance } from '../services/locationService.js';
+import backgroundImage from '../assets/Background.jpg';
 
 const GEOLOCATION_OPTIONS = {
   enableHighAccuracy: true,
-  timeout: 15000,
-  maximumAge: 60000,
+  timeout: 30000,
+  maximumAge: 0,
 };
 
 const isDesktop = () => typeof window !== 'undefined' && window.innerWidth >= 768;
 
 export default function Hero() {
+  const navigate = useNavigate();
   const [bookingType, setBookingType] = useState('now');
   const [pickupLocation, setPickupLocation] = useState('');
+  const [pickupCoords, setPickupCoords] = useState(null); // Precise lat/lon when detected
+  const [dropLocation, setDropLocation] = useState('');
   const [locationLoading, setLocationLoading] = useState(false);
   const [locationError, setLocationError] = useState('');
+  const [submitLoading, setSubmitLoading] = useState(false);
+  const [submitError, setSubmitError] = useState('');
   const isDarkMode = useTheme().theme === 'dark';
 
   const fetchAddressFromCoords = useCallback(async (latitude, longitude) => {
@@ -33,6 +37,8 @@ export default function Hero() {
   const handleLocationSuccess = useCallback(
     async (position) => {
       const { latitude, longitude } = position.coords;
+      // Store precise coordinates (avoid re-geocoding loss)
+      setPickupCoords({ lat: latitude, lon: longitude });
       const address = await fetchAddressFromCoords(latitude, longitude);
       setPickupLocation(address);
     },
@@ -55,6 +61,7 @@ export default function Hero() {
     (onLoad = false) => {
       setLocationError('');
       setLocationLoading(true);
+      setPickupCoords(null);
 
       if (!navigator.geolocation) {
         setLocationError('Geolocation is not supported by your browser.');
@@ -79,6 +86,41 @@ export default function Hero() {
 
   const handleDetectLocation = () => requestLocation(false);
 
+  const handleSeePrices = async (e) => {
+    e.preventDefault();
+    setSubmitError('');
+    if (!pickupLocation.trim()) {
+      setSubmitError('Please enter or detect your pickup address.');
+      return;
+    }
+    if (!dropLocation.trim()) {
+      setSubmitError('Please enter your drop address.');
+      return;
+    }
+    setSubmitLoading(true);
+    try {
+      const { distance, duration } = await estimateDistance(
+        pickupLocation.trim(),
+        dropLocation.trim(),
+        pickupCoords
+      );
+      navigate('/cityride', {
+        state: {
+          pickupLocation: pickupLocation.trim(),
+          dropLocation: dropLocation.trim(),
+          pickupCoords,
+          estimatedDistance: distance,
+          estimatedDuration: duration,
+          scheduleLater: bookingType === 'later',
+        },
+      });
+    } catch (err) {
+      setSubmitError(err?.message || 'Could not calculate distance. Please check the addresses.');
+    } finally {
+      setSubmitLoading(false);
+    }
+  };
+
   // Ask for location on load — only on desktop (laptop), not mobile
   useEffect(() => {
     if (!isDesktop()) return;
@@ -89,7 +131,7 @@ export default function Hero() {
     <section
       className="relative pt-24 pb-16 px-4 sm:px-6 lg:px-8 min-h-[28rem] sm:min-h-[34rem] lg:min-h-[38rem] bg-cover bg-center bg-no-repeat"
       style={{
-        backgroundImage: `url(${FALLBACK_BG})`,
+        backgroundImage: `url(${backgroundImage})`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
       }}
@@ -105,7 +147,7 @@ export default function Hero() {
           <div className="space-y-6">
             <h1 className={`text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight ${isDarkMode ? 'text-gray-100 [text-shadow:_0_1px_4px_rgba(0,0,0,0.9)]' : 'text-[#0f172a] [text-shadow:_0_1px_3px_rgba(255,255,255,0.8)]'}`}>
               Go anywhere with{' '}
-              <span className="text-[#FBBF24]">Go ElectriQ</span>
+              <span className="text-[#FBBF24]">GoElectriQ</span>
             </h1>
             <p className={`text-lg max-w-xl ${isDarkMode ? 'text-gray-300 [text-shadow:_0_1px_2px_rgba(0,0,0,0.7)]' : 'text-gray-900 [text-shadow:_0_1px_2px_rgba(255,255,255,0.9)]'}`}>
             Sustainable electric rides crafted for seamless city travel, stress-free airport transfers, and curated tours — combining comfort, innovation, and a commitment to a greener tomorrow.
@@ -167,7 +209,10 @@ export default function Hero() {
                     name="pickup"
                     placeholder="Enter or detect your pickup location"
                     value={pickupLocation}
-                    onChange={(e) => setPickupLocation(e.target.value)}
+                    onChange={(e) => {
+                      setPickupLocation(e.target.value);
+                      setPickupCoords(null);
+                    }}
                     className={`w-full pl-12 pr-4 py-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FBBF24] ${isDarkMode ? 'bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-500' : 'bg-[#4a4a4a] border-[#5a5a5a] text-white placeholder-gray-400'}`}
                   />
                 </div>
@@ -185,6 +230,8 @@ export default function Hero() {
                     type="text"
                     name="drop"
                     placeholder="Where do you want to go?"
+                    value={dropLocation}
+                    onChange={(e) => setDropLocation(e.target.value)}
                     className={`w-full pl-12 pr-4 py-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FBBF24] ${isDarkMode ? 'bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-500' : 'bg-[#4a4a4a] border-[#5a5a5a] text-white placeholder-gray-400'}`}
                   />
                 </div>
@@ -212,14 +259,26 @@ export default function Hero() {
               {locationError && (
                 <p className="text-sm text-red-500 px-1">{locationError}</p>
               )}
+              {submitError && (
+                <p className="text-sm text-red-500 px-1">{submitError}</p>
+              )}
 
               {/* See Prices Button */}
-              <Link
-                to="/cityride"
-                className="block w-full py-4 bg-[#FBBF24] text-gray-900 font-semibold rounded-lg hover:bg-[#F59E0B] transition-colors shadow-md text-center"
+              <button
+                type="button"
+                onClick={handleSeePrices}
+                disabled={submitLoading}
+                className="block w-full py-4 bg-[#FBBF24] text-gray-900 font-semibold rounded-lg hover:bg-[#F59E0B] transition-colors shadow-md text-center disabled:opacity-70 disabled:cursor-not-allowed"
               >
-                See Prices
-              </Link>
+                {submitLoading ? (
+                  <>
+                    <Loader2 className="w-5 h-5 animate-spin inline-block mr-2" />
+                    Calculating...
+                  </>
+                ) : (
+                  'See Prices'
+                )}
+              </button>
             </form>
           </div>
         </div>

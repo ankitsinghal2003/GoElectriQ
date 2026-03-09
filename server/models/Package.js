@@ -186,15 +186,14 @@ const packageSchema = new mongoose.Schema(
   }
 );
 
-// Generate slug from title before saving
-packageSchema.pre('save', function (next) {
+// Generate slug from title before saving (Mongoose 9: no next() callback)
+packageSchema.pre('save', function () {
   if (this.isModified('title') && !this.slug) {
     this.slug = this.title
       .toLowerCase()
       .replace(/[^a-z0-9]+/g, '-')
       .replace(/(^-|-$)/g, '');
   }
-  next();
 });
 
 // Calculate average rating

@@ -14,6 +14,7 @@ import CityRidePage from './pages/cityride';
 import AirportRidePage from './pages/Airportride';
 import IntercityRidePage from './pages/intercityridepage';
 import AdminPage from './pages/Adminpage';
+import ToursPage from './pages/ToursPage.jsx';
 import { useAuth } from './context/AuthContext.jsx';
 
 function AdminRoute() {
@@ -27,7 +28,7 @@ function Layout() {
   return (
     <>
       <Navbar />
-      <main className="pt-16 min-h-screen bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 transition-colors">
+      <main className="pt-16 min-h-screen bg-[#fafafa] dark:bg-black text-slate-900 dark:text-zinc-100 transition-colors duration-300">
         <Outlet />
       </main>
     </>
@@ -36,11 +37,11 @@ function Layout() {
 
 function NotFound() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#F8FAFC] dark:bg-gray-950 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-[#fafafa] dark:bg-black px-4 transition-colors duration-300">
       <div className="text-center max-w-md">
-        <h1 className="text-6xl sm:text-7xl font-bold text-[#0f172a] dark:text-gray-100 mb-2">404</h1>
-        <p className="text-base sm:text-lg text-[#64748b] dark:text-gray-400 mb-6">Page not found</p>
-        <a href="/" className="inline-block px-6 py-3 bg-[#5CE65C] text-white rounded-lg hover:bg-[#4ED84E] font-medium transition-colors">Go home</a>
+        <h1 className="text-6xl sm:text-7xl font-bold text-slate-900 dark:text-white mb-2">404</h1>
+        <p className="text-base sm:text-lg text-slate-500 dark:text-zinc-400 mb-6">Page not found</p>
+        <a href="/" className="inline-block px-6 py-3 bg-[#FBBF24] text-slate-900 rounded-lg hover:bg-[#F59E0B] font-semibold transition-all duration-200 shadow-lg hover:shadow-xl">Go home</a>
       </div>
     </div>
   );
@@ -64,6 +65,7 @@ function App() {
           <Route path="/cityride" element={<CityRidePage />} />
           <Route path="/airport" element={<AirportRidePage />} />
           <Route path="/intercityride" element={<IntercityRidePage />} />
+          <Route path="/tours" element={<ToursPage />} />
           <Route path="/admin" element={<AdminRoute />} />
           <Route path="*" element={<NotFound />} />
         </Route>

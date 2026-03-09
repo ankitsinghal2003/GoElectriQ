@@ -1,6 +1,8 @@
-import { ChevronLeft, ChevronRight, MapPin, Clock } from 'lucide-react';
+import { ChevronLeft, ChevronRight, MapPin, Clock, Compass } from 'lucide-react';
 import { useRef, useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import ImageWithFallback from './common/ImageWithFallback';
+import { getPackageImageUrl } from '../utils/imageUrl.js';
 import TourBookingModal from './TourBookingModal';
 import { getPackages } from '../services/packageService.js';
 
@@ -34,25 +36,63 @@ export default function TravelTours() {
   };
 
   return (
-    <section id="travel-tours" className="py-16 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-900">
+    <section id="travel-tours" className="py-8 sm:py-10 px-4 sm:px-6 lg:px-8 bg-slate-50 dark:bg-zinc-950 transition-colors duration-300">
       <div className="max-w-7xl mx-auto">
-        <div className="flex justify-between items-center mb-8">
-          <h2 className="text-3xl sm:text-4xl font-bold text-[#0f172a] dark:text-gray-100">
-            Travel Tours Packages
-          </h2>
+        {/* Centered header – same style as Temple Tours */}
+        <div className="text-center mb-6">
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.4 }}
+            className="inline-flex items-center gap-1.5 bg-white dark:bg-zinc-900 px-3 py-1 rounded-full border border-emerald-500/30 mb-2"
+          >
+            <Compass className="w-4 h-4 text-[#008000]" />
+            <span className="text-xs font-semibold text-[#008000]">EXPLORE INDIA</span>
+          </motion.div>
+          <motion.h2
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.4, delay: 0.1 }}
+            className="text-2xl sm:text-3xl font-bold mb-1"
+          >
+            <span className="text-slate-900 dark:text-white">Travel </span>
+            <span className="text-[#008000]">Tours Packages</span>
+          </motion.h2>
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.4, delay: 0.15 }}
+            className="text-sm text-[#64748b] dark:text-gray-400"
+          >
+            Discover curated travel packages across India
+          </motion.p>
+        </div>
+
+        {/* Navigation – same row as Temple Tours */}
+        <div className="flex justify-between items-center mb-4">
+          <h3 className="text-lg font-bold text-slate-900 dark:text-white">
+            Popular Packages
+          </h3>
           <div className="hidden sm:flex gap-2">
-            <button
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
               onClick={() => scroll('left')}
-              className="p-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-full hover:bg-[#dcfce7] dark:hover:bg-gray-700 hover:border-[#67fc59] transition-colors"
+              className="p-2 bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-700 rounded-full hover:bg-emerald-600 hover:border-emerald-600 transition-colors duration-200 group"
             >
-              <ChevronLeft className="w-5 h-5 text-[#0f172a] dark:text-gray-200" />
-            </button>
-            <button
+              <ChevronLeft className="w-4 h-4 text-slate-700 dark:text-zinc-300 group-hover:text-white transition-colors" />
+            </motion.button>
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
               onClick={() => scroll('right')}
-              className="p-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-full hover:bg-[#dcfce7] dark:hover:bg-gray-700 hover:border-[#67fc59] transition-colors"
+              className="p-2 bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-700 rounded-full hover:bg-emerald-600 hover:border-emerald-600 transition-colors duration-200 group"
             >
-              <ChevronRight className="w-5 h-5 text-[#0f172a] dark:text-gray-200" />
-            </button>
+              <ChevronRight className="w-4 h-4 text-slate-700 dark:text-zinc-300 group-hover:text-white transition-colors" />
+            </motion.button>
           </div>
         </div>
 
@@ -71,20 +111,20 @@ export default function TravelTours() {
               return (
                 <div
                   key={tour._id}
-                  className="flex-shrink-0 w-[280px] sm:w-[300px] bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-shadow cursor-pointer"
+                  className="flex-shrink-0 w-[280px] sm:w-[300px] bg-white dark:bg-zinc-900/90 rounded-xl overflow-hidden shadow-md hover:shadow-xl dark:shadow-none dark:border dark:border-zinc-800 hover:border-emerald-500/50 transition-all duration-300 cursor-pointer"
                 >
                   <div className="relative h-48 overflow-hidden">
                     <ImageWithFallback
-                      src={tour.coverImage || tour.images?.[0] || defaultImage}
+                      src={getPackageImageUrl(tour.coverImage, tour.images, defaultImage)}
                       alt={tour.title}
                       className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
                     />
                   </div>
                   <div className="p-4">
-                    <h3 className="font-semibold text-lg text-[#0f172a] dark:text-gray-100 mb-2">
+                    <h3 className="font-semibold text-lg text-slate-900 dark:text-white mb-2">
                       {tour.title}
                     </h3>
-                    <div className="flex items-center text-sm text-[#64748b] dark:text-gray-400 mb-2">
+                    <div className="flex items-center text-sm text-slate-500 dark:text-zinc-400 mb-2">
                       <Clock className="w-4 h-4 mr-1" />
                       <span>{tour.duration?.days || 1} Day{tour.duration?.days > 1 ? 's' : ''}</span>
                       <span className="mx-2">•</span>
@@ -99,7 +139,7 @@ export default function TravelTours() {
                               ₹{originalPrice.toLocaleString()}
                             </span>
                             <div className="flex items-center gap-2 flex-wrap">
-                              <span className="text-xl font-bold text-[#0f172a] dark:text-gray-100">
+                              <span className="text-xl font-bold text-slate-900 dark:text-white">
                                 ₹{price.toLocaleString()}
                               </span>
                               <span className="inline-flex items-center px-1.5 py-0.5 rounded text-xs font-semibold bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-400">
@@ -108,14 +148,14 @@ export default function TravelTours() {
                             </div>
                           </>
                         ) : (
-                          <span className="text-xl font-bold text-[#0f172a] dark:text-gray-100">
+                          <span className="text-xl font-bold text-slate-900 dark:text-white">
                             ₹{price.toLocaleString()}
                           </span>
                         )}
                       </div>
                       <button
                         onClick={() => handleBookNow({ ...tour, price, _id: tour._id })}
-                        className="px-4 py-2 bg-[#000000] text-white rounded-lg hover:bg-[#52e040] transition-colors text-sm"
+                        className="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-500 font-medium transition-colors duration-200 text-sm"
                       >
                         Book Now
                       </button>

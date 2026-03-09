@@ -3,6 +3,7 @@ import TourBooking from '../models/TourBooking.js';
 import User from '../models/User.js';
 import Driver from '../models/Driver.js';
 import Package from '../models/Package.js';
+import Feedback from '../models/Feedback.js';
 
 export const getAllBookings = async (req, res) => {
     try {
@@ -236,6 +237,30 @@ export const updatePackage = async (req, res) => {
     const pkg = await Package.findByIdAndUpdate(id, updates, { new: true });
     if (!pkg) return res.status(404).json({ success: false, message: 'Package not found' });
     res.status(200).json({ success: true, data: pkg });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+/**
+ * Get all feedback (admin)
+ */
+export const getAdminFeedback = async (req, res) => {
+  try {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 50;
+    const skip = (page - 1) * limit;
+
+    const feedback = await Feedback.find()
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit);
+    const total = await Feedback.countDocuments();
+
+    res.status(200).json({
+      success: true,
+      data: { feedback, pagination: { total, page, pages: Math.ceil(total / limit) } },
+    });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
