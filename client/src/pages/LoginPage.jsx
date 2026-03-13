@@ -23,7 +23,7 @@ export default function LoginPage() {
     try {
       const result = await login(email, password);
       if (result.success) {
-        navigate('/profile');
+        navigate('/');
       } else {
         setError(result.message || 'Login failed');
       }
@@ -40,7 +40,7 @@ export default function LoginPage() {
     try {
       const result = await loginWithGoogle(credentialResponse.credential);
       if (result.success) {
-        navigate('/profile');
+        navigate('/');
       } else {
         setError(result.message || 'Google login failed');
       }
@@ -55,7 +55,7 @@ export default function LoginPage() {
     setError('Google sign-in was cancelled or failed');
   };
 
-  if (isAuthenticated) return <Navigate to="/profile" replace />;
+  if (isAuthenticated) return <Navigate to="/" replace />;
 
   const isDark = theme === 'dark';
 

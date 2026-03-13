@@ -42,6 +42,25 @@ body {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+/* Greeting name animation – subtle "comes and goes" effect */
+@keyframes name-glow {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+.animate-name-glow {
+  animation: name-glow 2s ease-in-out infinite;
+}
+
+/* Hero greeting name – big, bold, comes and goes */
+@keyframes hero-name {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.75; transform: scale(1.03); }
+}
+.animate-hero-name {
+  animation: hero-name 2.5s ease-in-out infinite;
+  display: inline-block;
+}
+
 /* Hide scrollbar but keep functionality */
 .scrollbar-hide {
   -ms-overflow-style: none;

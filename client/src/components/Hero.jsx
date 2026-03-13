@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { MapPin, Navigation, Loader2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext.jsx';
 import { useTheme } from '../context/ThemeContext.jsx';
 import { reverseGeocode, estimateDistance } from '../services/locationService.js';
 import backgroundImage from '../assets/Background.jpg';
@@ -15,6 +16,8 @@ const isDesktop = () => typeof window !== 'undefined' && window.innerWidth >= 76
 
 export default function Hero() {
   const navigate = useNavigate();
+  const { user, isAuthenticated } = useAuth();
+  const firstName = user?.name?.trim().split(/\s+/)[0] || user?.email?.split('@')[0] || '';
   const [bookingType, setBookingType] = useState('now');
   const [pickupLocation, setPickupLocation] = useState('');
   const [pickupCoords, setPickupCoords] = useState(null); // Precise lat/lon when detected
@@ -145,6 +148,11 @@ export default function Hero() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* Left Side - Text Content */}
           <div className="space-y-6">
+            {isAuthenticated && firstName && (
+              <p className={`text-3xl sm:text-4xl lg:text-5xl font-bold ${isDarkMode ? 'text-gray-100 [text-shadow:_0_2px_6px_rgba(0,0,0,0.9)]' : 'text-[#0f172a] [text-shadow:_0_2px_4px_rgba(255,255,255,0.8)]'}`}>
+                Hello, <span className="text-blue-500 animate-hero-name">{firstName}</span>
+              </p>
+            )}
             <h1 className={`text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight ${isDarkMode ? 'text-gray-100 [text-shadow:_0_1px_4px_rgba(0,0,0,0.9)]' : 'text-[#0f172a] [text-shadow:_0_1px_3px_rgba(255,255,255,0.8)]'}`}>
               Go anywhere with{' '}
               <span className="text-[#FBBF24]">GoElectriQ</span>

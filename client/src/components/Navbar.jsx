@@ -15,6 +15,8 @@ export default function Navbar() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
 
+  const firstName = user?.name?.trim().split(/\s+/)[0] || user?.email?.split('@')[0] || 'User';
+
   const handleLogout = () => {
     logout();
     setIsMenuOpen(false);
@@ -94,9 +96,10 @@ export default function Navbar() {
                 )}
                 <Link
                   to="/profile"
-                  className={`px-4 py-2 rounded-lg transition-colors font-medium ${isDarkMode ? 'text-white hover:bg-zinc-800' : 'text-slate-900 hover:bg-slate-100'}`}
+                  className={`flex items-center gap-1 px-4 py-2 rounded-lg transition-colors font-medium ${isDarkMode ? 'text-white hover:bg-zinc-800' : 'text-slate-900 hover:bg-slate-100'}`}
                 >
-                  {user?.name || user?.email || 'Profile'}
+                  <span>Hello</span>
+                  <span className="text-blue-500 font-semibold animate-name-glow">{firstName}</span>
                 </Link>
                 <button
                   onClick={handleLogout}
@@ -174,9 +177,10 @@ export default function Navbar() {
                 <Link
                   to="/profile"
                   onClick={() => setIsMenuOpen(false)}
-                  className={`block px-4 py-2 font-medium ${isDarkMode ? 'text-gray-900' : 'text-white'}`}
+                  className={`flex items-center gap-1 px-4 py-2 font-medium ${isDarkMode ? 'text-white' : 'text-slate-900'}`}
                 >
-                  {user?.name || 'Profile'}
+                  <span>Hello</span>
+                  <span className="text-blue-500 font-semibold animate-name-glow">{firstName}</span>
                 </Link>
                 <button
                   onClick={() => { handleLogout(); setIsMenuOpen(false); }}

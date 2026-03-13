@@ -34,7 +34,7 @@ export default function RegisterPage() {
     try {
       const result = await register(name, email, phoneNum, password);
       if (result.success) {
-        navigate('/profile');
+        navigate('/');
       } else {
         setError(result.message || 'Registration failed');
       }
@@ -51,7 +51,7 @@ export default function RegisterPage() {
     try {
       const result = await loginWithGoogle(credentialResponse.credential);
       if (result.success) {
-        navigate('/profile');
+        navigate('/');
       } else {
         setError(result.message || 'Google sign-up failed');
       }
@@ -66,7 +66,7 @@ export default function RegisterPage() {
     setError('Google sign-in was cancelled or failed');
   };
 
-  if (isAuthenticated) return <Navigate to="/profile" replace />;
+  if (isAuthenticated) return <Navigate to="/" replace />;
 
   const isDark = theme === 'dark';
 
